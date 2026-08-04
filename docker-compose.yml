@@ -1,0 +1,63 @@
+services:
+  mysql:
+    container_name: mysql_container
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: cs19
+      MYSQL_DATABASE: cs19
+      MYSQL_USER: cs19
+      MYSQL_PASSWORD: cs19
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - mysql
+    restart: unless-stopped
+  phpmyadmin:
+    container_name: phpmyadmin_container
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: cs19
+    ports:
+      - "8484:80"
+    networks:
+      - mysql
+    restart: unless-stopped
+#  postgres:
+#    container_name: postgres_container
+#    image: postgres:14
+#    environment:
+#      POSTGRES_USER: cs19
+#      POSTGRES_PASSWORD: cs19
+#      PGDATA: /data/postgres
+#    volumes:
+#      - postgres:/data/postgres
+#    ports:
+#      - "5432:5432"
+#    networks:
+#      - postgres
+#    restart: unless-stopped
+#  pgadmin:
+#    container_name: pgadmin_container
+#    image: dpage/pgadmin4
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+#      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+#      PGADMIN_CONFIG_SERVER_MODE: 'False'
+#    volumes:
+#      - pgadmin:/var/lib/pgadmin
+#    ports:
+#      - "5050:80"
+#    networks:
+#      - postgres
+#    restart: unless-stopped
+
+networks:
+  mysql:
+    driver: bridge
+
+volumes:
+  mysql_data:
