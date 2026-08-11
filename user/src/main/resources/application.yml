@@ -1,28 +1,5 @@
 spring:
   application:
     name: user-service
-  mongodb:
-    uri: mongodb+srv://chandrasekharpatra65_db_user:chandra19@cluster0.rhq9wg8.mongodb.net/userdb?retryWrites=true&w=majority&appName=Cluster0
-
-#  datasource:
-#    url: jdbc:postgresql://localhost:5432/userdb
-#    username: cs19
-#    password: cs19
-#  jpa:
-#    database: POSTGRESQL
-#    database-platform: org.hibernate.dialect.PostgreSQLDialect
-#    show-sql: true
-#    hibernate:
-#      ddl-auto: update
-#  jpa:
-#    show-sql: true
-#    hibernate:
-#      ddl-auto: update
-#  h2:
-#    console:
-#      enabled: true
-#  datasource:
-#    url: jdbc:h2:mem:test
-
-server:
-  port: 8082
+  config:
+    import: optional:configserver:http://localhost:8888
