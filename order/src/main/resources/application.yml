@@ -13,7 +13,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-#  jpa:
+#  jpa:5
 #    show-sql: true
 #    hibernate:
 #      ddl-auto: update
