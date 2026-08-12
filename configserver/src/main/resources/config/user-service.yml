@@ -1,6 +1,19 @@
 spring:
-  mongodb:
-    uri: mongodb+srv://chandrasekharpatra65_db_user:chandra19@cluster0.rhq9wg8.mongodb.net/userdb?retryWrites=true&w=majority&appName=Cluster0
+  datasource:
+    mongodb:
+      uri: ${DB_URL}
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
 #  datasource:
 #    url: jdbc:postgresql://localhost:5432/userdb
@@ -24,3 +37,7 @@ spring:
 
 server:
   port: 8082
+
+
+app:
+  test: "hello user rabbitmq test successful"

@@ -1,15 +1,26 @@
 spring:
   datasource:
-    url: jdbc:postgresql://ep-morning-frog-axfuud9g-pooler.c-4.us-east-2.aws.neon.tech/productdb?sslmode=require&channel_binding=require
-
-    username: neondb_owner
-    password: npg_vUnkM2GoXA8c
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
   jpa:
     database: POSTGRESQL
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
     hibernate:
       ddl-auto: update
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 #  jpa:
 #    show-sql: true
 #    hibernate:
@@ -22,3 +33,6 @@ spring:
 
 server:
   port: 8081
+
+app:
+  test: "hello product rabbitmq test sucessful"
