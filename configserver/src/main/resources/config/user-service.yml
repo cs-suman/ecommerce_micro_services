@@ -15,6 +15,14 @@ management:
       exposure:
         include: "*"
 
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+  register-with-eureka: true
+  fetch-registry: true
+
+
 #  datasource:
 #    url: jdbc:postgresql://localhost:5432/userdb
 #    username: cs19
@@ -40,4 +48,4 @@ server:
 
 
 app:
-  test: "hello user rabbitmq test successful"
+  test: "hello user rabbitmq test successful "
