@@ -1,9 +1,11 @@
 package com.ecommerce.product.service;
 
 
-
+import com.ecommerce.product.dto.ProductRequest;
+import com.ecommerce.product.dto.ProductResponse;
 import com.ecommerce.product.model.Product;
 import com.ecommerce.product.repository.ProductRepository;
+import io.micrometer.observation.ObservationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public ProductRepository.ProductResponse createproduct(ProductRepository.ProductRequest productRequest) {
+    public ProductResponse createproduct(ProductRequest productRequest) {
 
         Product product = new Product();
         updateProductFromRequest(product, productRequest);
@@ -30,9 +32,9 @@ public class ProductService {
     }
 
 
-    private ProductRepository.ProductResponse mapToProductResponse(Product savedProduct) {
+    private ProductResponse mapToProductResponse(Product savedProduct) {
 
-        ProductRepository.ProductResponse response = new ProductRepository.ProductResponse();
+        ProductResponse response = new ProductResponse();
         response.setId(savedProduct.getId());
         response.setName(savedProduct.getName());
         response.setActive(savedProduct.getActive());
@@ -46,7 +48,7 @@ public class ProductService {
         return response;
     }
 
-    private void updateProductFromRequest(Product product, ProductRepository.ProductRequest productRequest) {
+    private void updateProductFromRequest(Product product, ProductRequest productRequest) {
 
 
         product.setName(productRequest.getName());
@@ -58,7 +60,7 @@ public class ProductService {
         product.setStockQuantity(productRequest.getStockQuantity());
     }
 
-    public ProductRepository.ProductResponse updateProduct(Long id, ProductRepository.ProductRequest productRequest) {
+    public ProductResponse updateProduct(Long id, ProductRequest productRequest) {
 
         Optional<Product> product = productRepository.findById(id);
         if (product.isEmpty()) {
@@ -76,11 +78,11 @@ public class ProductService {
 
     }
 
-    public List<ProductRepository.ProductResponse> getAllProducts() {
+    public List<ProductResponse> getAllProducts() {
         List<Product> productList = productRepository.findByActiveTrue();
-        List<ProductRepository.ProductResponse> list = new ArrayList<>();
+        List<ProductResponse> list = new ArrayList<>();
         for (int i = 0; i < productList.size(); i++) {
-            ProductRepository.ProductResponse temp = mapToProductResponse(productList.get(i));
+            ProductResponse temp = mapToProductResponse(productList.get(i));
             list.add(temp);
         }
         return list;
@@ -100,19 +102,21 @@ public class ProductService {
         return true;
     }
 
-    public ResponseEntity<List<ProductRepository.ProductResponse>> searchProduct(String keyword) {
-List<Product> productList=productRepository.searchProduct(keyword);
-List<ProductRepository.ProductResponse> response=new ArrayList<>();
-for(int i=0;i<=productList.size();i++){
+    public ResponseEntity<List<ProductResponse>> searchProduct(String keyword) {
+        List<Product> productList = productRepository.searchProduct(keyword);
+        List<ProductResponse> response = new ArrayList<>();
+        for (int i = 0; i <= productList.size(); i++) {
 
-    ProductRepository.ProductResponse save= mapToProductResponse(productList.get(i));
-    response.add(save);
-
-
-
-}
-return new ResponseEntity<>(response, HttpStatus.OK);
+            ProductResponse save = mapToProductResponse(productList.get(i));
+            response.add(save);
 
 
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    public Optional<ProductResponse> getProductById(String id) {
+        return productRepository.findByIdAndActiveTrue(Long.valueOf(id))
+                .map(this::mapToProductResponse);
     }
 }
