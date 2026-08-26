@@ -1,8 +1,10 @@
 package com.ecommerce.order.services;
 
 import com.ecommerce.order.clients.ProductServiceClient;
+import com.ecommerce.order.clients.UserServiceClient;
 import com.ecommerce.order.dto.CartItemRequest;
 import com.ecommerce.order.dto.ProductResponse;
+import com.ecommerce.order.dto.UserResponce;
 import com.ecommerce.order.model.CartItem;
 //import com.app.ecome.model.Product;
 import com.ecommerce.order.repository.CartItemRepository;
@@ -26,6 +28,8 @@ public class CartService {
 //    private final UserRepository userRepository;
     private final CartItemRepository cartItemRepository;
     private final ProductServiceClient productServiceClient;
+    private final UserServiceClient userServiceClient;
+
     public boolean addToCart(String userId, CartItemRequest cartItemRequest) {
     ProductResponse productResponse=productServiceClient.getproductdetails(String.valueOf(cartItemRequest.getProductId()));
 
@@ -35,6 +39,13 @@ public class CartService {
         if ((productResponse.getStockQuantity()<cartItemRequest.getQuantity())){
             return false;
         }
+
+        UserResponce userResponce = userServiceClient.getUserDetails(userId);
+
+        if(userResponce==null){
+            return false;
+        }
+
 
 //        Optional<Product> productOpt = productRepository.findById(cartItemRequest.getProductId());
 //
@@ -65,7 +76,7 @@ public class CartService {
         } else {
             CartItem cartItem = new CartItem();
 
-            cartItem.setUserId(Long.valueOf(userId));
+            cartItem.setUserId(userId);
             cartItem.setProductId(cartItemRequest.getProductId());
             cartItem.setQuantity(cartItemRequest.getQuantity());
             cartItem.setPrice(BigDecimal.valueOf(1919191919.19));
