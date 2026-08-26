@@ -14,17 +14,19 @@ import java.util.Optional;
 @Configuration
 public class ProductServiceClientConfig {
 
-    @Bean
-    @Primary
-    public RestClient.Builder restClientBuilderprimary() {
-        return RestClient.builder();
-    }
 
-    @Bean
-    @LoadBalanced
-    public RestClient.Builder restClientBuilder() {
-        return RestClient.builder();
-    }
+///// we have move bellow config bean to restClientConfigBean
+//    @Bean
+//    @Primary
+//    public RestClient.Builder restClientBuilderprimary() {
+//        return RestClient.builder();
+//    }
+//
+//    @Bean
+//    @LoadBalanced
+//    public RestClient.Builder restClientBuilder() {
+//        return RestClient.builder();
+//    }
 
     @Bean
     public ProductServiceClient restClientInterface(@LoadBalanced RestClient.Builder restclientBuilder) {
