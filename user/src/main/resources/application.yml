@@ -5,6 +5,11 @@ spring:
     import: optional:configserver:http://localhost:8888
 
 logging:
- level:
-   root: INFO
-   com.ecommerce.user: TRACE
+  level:
+    root: INFO
+    com.ecommerce.user: TRACE
+  file:
+    name: logs/app.log
+  logback:
+    max-file-size: 5MB
+    max-history: 7
