@@ -3,6 +3,8 @@ package com.ecommerce.user.controller;
 import com.ecommerce.user.dto.UserRequest;
 import com.ecommerce.user.dto.UserResponce;
 import com.ecommerce.user.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    public static Logger logger= LoggerFactory.getLogger(UserController.class);
 
     @GetMapping
     public ResponseEntity<List<UserResponce>> getAllusers() {
@@ -30,6 +33,14 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponce> getUser(@PathVariable String id){
+        logger.info("Request recived for Usern: {}",id);
+
+        logger.trace("This is trase level-Very detailed logs");
+        logger.debug("This is debug level-used for development debugging");
+        logger.info("This is info level-general system info");
+        logger.warn("This is warn level-something might be wrong");
+        logger.error("This is error level-something failed");
+
         UserResponce userResponse = userService.fetchUser(id);
         if (userResponse == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
