@@ -23,14 +23,12 @@ eureka:
   fetch-registry: true
 
 logging:
-  level:
-    root: INFO
-    com.ecommerce.user: TRACE
   file:
     name: logs/${spring.application.name}.log
   logback:
-    max-file-size: 5MB
-    max-history: 7
+    rollingpolicy:
+      max-file-size: 5MB
+      max-history: 7
 
 #  datasource:
 #    url: jdbc:postgresql://localhost:5432/userdb
