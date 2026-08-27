@@ -3,6 +3,7 @@ package com.ecommerce.user.controller;
 import com.ecommerce.user.dto.UserRequest;
 import com.ecommerce.user.dto.UserResponce;
 import com.ecommerce.user.services.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@Slf4j
 public class UserController {
 
     @Autowired
     private UserService userService;
-    public static Logger logger= LoggerFactory.getLogger(UserController.class);
+//    public static Logger logger= LoggerFactory.getLogger(UserController.class);
 
     @GetMapping
     public ResponseEntity<List<UserResponce>> getAllusers() {
@@ -33,13 +35,13 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponce> getUser(@PathVariable String id){
-        logger.info("Request recived for Usern: {}",id);
+        log.info("Request recived for Usern: {}",id);
 
-        logger.trace("This is trase level-Very detailed logs");
-        logger.debug("This is debug level-used for development debugging");
-        logger.info("This is info level-general system info");
-        logger.warn("This is warn level-something might be wrong");
-        logger.error("This is error level-something failed");
+        log.trace("This is trase level-Very detailed logs");
+        log.debug("This is debug level-used for development debugging");
+        log.info("This is info level-general system info");
+        log.warn("This is warn level-something might be wrong");
+        log.error("This is error level-something failed");
 
         UserResponce userResponse = userService.fetchUser(id);
         if (userResponse == null) {

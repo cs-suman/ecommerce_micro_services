@@ -6,4 +6,5 @@ spring:
 
 logging:
  level:
-   root: TRACE
+   root: INFO
+   com.ecommerce.user: TRACE
