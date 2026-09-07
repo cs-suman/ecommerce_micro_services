@@ -1,31 +1,33 @@
-services:
-  mysql:
-    container_name: mysql_container
-    image: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: cs19
-      MYSQL_DATABASE: cs19
-      MYSQL_USER: cs19
-      MYSQL_PASSWORD: cs19
-    volumes:
-      - mysql_data:/var/lib/mysql
-    ports:
-      - "3306:3306"
-    networks:
-      - mysql
-    restart: unless-stopped
-  phpmyadmin:
-    container_name: phpmyadmin_container
-    image: phpmyadmin/phpmyadmin
-    environment:
-      PMA_HOST: mysql
-      PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: cs19
-    ports:
-      - "8484:80"
-    networks:
-      - mysql
-    restart: unless-stopped
+#services:
+
+#    container_name: mysql_container
+#    image: mysql
+#    environment:
+#      MYSQL_ROOT_PASSWORD: cs19
+#      MYSQL_DATABASE: cs19
+#      MYSQL_USER: cs19
+#      MYSQL_PASSWORD: cs19
+#    volumes:
+#      - mysql_data:/var/lib/mysql
+#    ports:
+#      - "3306:3306"
+#    networks:
+#      - mysql
+#    restart: unless-stopped
+#  phpmyadmin:
+#    container_name: phpmyadmin_container
+#    image: phpmyadmin/phpmyadmin
+#    environment:
+#      PMA_HOST: mysql
+#      PMA_PORT: 3306
+#      MYSQL_ROOT_PASSWORD: cs19
+#    ports:
+#      - "8484:80"
+#    networks:
+#      - mysql
+#    restart: unless-stopped
+
+
 #  postgres:
 #    container_name: postgres_container
 #    image: postgres:14
@@ -55,9 +57,10 @@ services:
 #      - postgres
 #    restart: unless-stopped
 
-networks:
-  mysql:
-    driver: bridge
+#networks:
+#  mysql:
+#    driver: bridge
 
-volumes:
-  mysql_data:
+#
+#volumes:
+#  mysql_data:
