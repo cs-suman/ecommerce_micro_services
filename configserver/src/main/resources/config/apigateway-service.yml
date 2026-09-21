@@ -1,32 +1,32 @@
-spring:
-  cloud:
-    gateway:
-      server:
-        webflux:
-          routes:
-            - id: product-service
-              uri: ib://PRODUCT-SERVICE
-              predicates:
-                - Path=/api/products/**
-            - id: user-service
-              uri: lb://USER-SERVICE
-              predicates:
-                - Path=/api/users/**
-            - id: cart-service
-              uri: ib://ORDER-SERVICE
-              predicates:
-                - Path=/api/orders/**, /api/cart/**
-            - id: eureka-service
-              uri: http://localhost:8761/
-              predicates:
-                - Path=/eureka/main
-              filters:
-                - SetPath=/
-            - id: eureka-service-static
-              uri: http://localhost:8761/
-              predicates:
-                - Path=/eureka/**
-
+#spring:
+#  cloud:
+#    gateway:
+#      server:
+#        webflux:
+#          routes:
+#            - id: product-service
+#              uri: ib://PRODUCT-SERVICE
+#              predicates:
+#                - Path=/api/products/**
+#            - id: user-service
+#              uri: lb://USER-SERVICE
+#              predicates:
+#                - Path=/api/users/**
+#            - id: cart-service
+#              uri: lb://ORDER-SERVICE
+#              predicates:
+#                - Path=/api/orders/**, /api/cart/**
+#            - id: eureka-service
+#              uri: http://localhost:8761/
+#              predicates:
+#                - Path=/eureka/main
+#              filters:
+#                - SetPath=/
+#            - id: eureka-service-static
+#              uri: http://localhost:8761/
+#              predicates:
+#                - Path=/eureka/**
+#
 
 
 server:
