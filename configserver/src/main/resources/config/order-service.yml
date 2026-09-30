@@ -21,6 +21,12 @@ management:
     web:
       exposure:
         include: "*"
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
 
   tracing:
     sampling:
@@ -42,6 +48,7 @@ logging:
       max-history: 7
 
 
+
 #  jpa:
 #    show-sql: true
 #    hibernate:
@@ -57,3 +64,17 @@ server:
 
 app:
   test: "hello order rabbitmq test sucessful "
+#  circuitbreaker:
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      productServices:
+        registerHealthIndicator: true
+        slideWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberofCallsInHalfOpenState: 3
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        automaticTransitionFromOpenToHalfOpenEnable: true
+        slideWindowType: count_based

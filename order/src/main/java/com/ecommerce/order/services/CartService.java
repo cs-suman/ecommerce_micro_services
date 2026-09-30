@@ -10,6 +10,7 @@ import com.ecommerce.order.model.CartItem;
 import com.ecommerce.order.repository.CartItemRepository;
 //import com.app.ecome.repository.ProductRepository;
 //import com.app.ecome.repository.UserRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 //import com.app.ecome.model.User;
@@ -29,7 +30,7 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
     private final ProductServiceClient productServiceClient;
     private final UserServiceClient userServiceClient;
-
+@CircuitBreaker(name = "productServices")
     public boolean addToCart(String userId, CartItemRequest cartItemRequest) {
     ProductResponse productResponse=productServiceClient.getproductdetails(String.valueOf(cartItemRequest.getProductId()));
 
