@@ -30,7 +30,7 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
     private final ProductServiceClient productServiceClient;
     private final UserServiceClient userServiceClient;
-@CircuitBreaker(name = "productServices")
+@CircuitBreaker(name = "productServices" , fallbackMethod = "addToCartFallBack")
     public boolean addToCart(String userId, CartItemRequest cartItemRequest) {
     ProductResponse productResponse=productServiceClient.getproductdetails(String.valueOf(cartItemRequest.getProductId()));
 
@@ -87,7 +87,11 @@ public class CartService {
 
         return true;
     }
-
+    // make sure both  original method and falback method have same parameter
+    public  boolean addToCartFallBack(String userId, CartItemRequest cartItemRequest , Exception  e){
+        System.out.println(" folback for addToCart Called");
+     return  false;
+    }
 
     public boolean deleteItemFromCart(String userId, Long productId) {
 
