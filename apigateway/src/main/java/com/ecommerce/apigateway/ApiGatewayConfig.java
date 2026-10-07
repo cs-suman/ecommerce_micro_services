@@ -13,6 +13,7 @@ public class ApiGatewayConfig {
         return builder.routes()
                 .route("product-service", r -> r.path("/api/products/**")
 //                        .filters(f->f.rewritePath("/products(?<segment>/?.*)","/api/products${segment}"))
+                        .filters(f->f.circuitBreaker(config -> config.setName("ecomBreaker")))
                         .uri("lb://PRODUCT-SERVICE"))
                 .route("user-service", r -> r.path("/api/users/**")
 //                        .filters(f->f.rewritePath("/users(?<segment>/?.*)","/api/users${segment}"))
