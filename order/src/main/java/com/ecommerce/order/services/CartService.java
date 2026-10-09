@@ -11,6 +11,7 @@ import com.ecommerce.order.repository.CartItemRepository;
 //import com.app.ecome.repository.ProductRepository;
 //import com.app.ecome.repository.UserRepository;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 //import com.app.ecome.model.User;
@@ -30,8 +31,11 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
     private final ProductServiceClient productServiceClient;
     private final UserServiceClient userServiceClient;
-@CircuitBreaker(name = "productServices" , fallbackMethod = "addToCartFallBack")
+    int attempt=0;
+//@CircuitBreaker(name = "productServices" , fallbackMethod = "addToCartFallBack")
+    @Retry(name = "retryBreaker" , fallbackMethod = "addToCartFallBack")
     public boolean addToCart(String userId, CartItemRequest cartItemRequest) {
+        System.out.println("attempt count"+ ++attempt);
     ProductResponse productResponse=productServiceClient.getproductdetails(String.valueOf(cartItemRequest.getProductId()));
 
         if(productResponse==null){
@@ -90,6 +94,7 @@ public class CartService {
     // make sure both  original method and falback method have same parameter
     public  boolean addToCartFallBack(String userId, CartItemRequest cartItemRequest , Exception  e){
         System.out.println(" folback for addToCart Called");
+
      return  false;
     }
 
