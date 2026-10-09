@@ -1,24 +1,29 @@
 package com.ecommerce.apigateway;
 
+import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
+import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import reactor.core.publisher.Mono;
 
 @Configuration
 public class ApiGatewayConfig {
-   @Bean
+
+    @Bean
     public RouteLocator CoustomRouterLocator(RouteLocatorBuilder builder) {
 
         return builder.routes()
                 .route("product-service", r -> r.path("/api/products/**")
 //                        .filters(f->f.rewritePath("/products(?<segment>/?.*)","/api/products${segment}"))
-                        .filters(f->f.retry(retryConfig -> retryConfig
-                                        .setRetries(10).setMethods(HttpMethod.GET))
+                        .filters(f -> f.retry(retryConfig -> retryConfig
+                                        .setRetries(10).setMethods(HttpMethod.GET)).requestRateLimiter(config -> config.setRateLimiter(radisRateLimiter())
+                                        .setKeyResolver(hostNameKeyResolver()))
 
                                 .circuitBreaker(config -> config.setName("ecomBreaker")
-                                .setFallbackUri("forward:/fallback/products")))
+                                        .setFallbackUri("forward:/fallback/products")))
 
                         .uri("lb://PRODUCT-SERVICE"))
                 .route("user-service", r -> r.path("/api/users/**")
@@ -34,4 +39,12 @@ public class ApiGatewayConfig {
                 .build();
     }
 
+    @Bean
+    public RedisRateLimiter radisRateLimiter() {
+        return new RedisRateLimiter(10, 20, 1);
+    }
+    @Bean
+    public KeyResolver hostNameKeyResolver(){
+        return exchange -> Mono.just(exchange.getRequest().getLocalAddress().getHostName());
+    }
 }
