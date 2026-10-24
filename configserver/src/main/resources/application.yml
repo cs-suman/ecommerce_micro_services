@@ -7,7 +7,7 @@ spring:
     config:
       server:
         native:
-          search-locations: file:///D:\SpringProject\ecommerce micro services\configserver\src\main\resources\config
+          search-locations: file:///D:\SpringbootProjeect19\ecommerce_micro_services\configserver\src\main\resources\config
 
   rabbitmq:
     host: localhost
