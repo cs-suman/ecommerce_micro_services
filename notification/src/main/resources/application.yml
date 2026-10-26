@@ -8,6 +8,21 @@ spring:
     username: guest
     password: guest
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: chandrasekharpatra65@gmail.com
+    password: clru pcbv bolz cxgy
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: 8084
+
 rabbitmq:
   exchange:
     name: order.exchange
@@ -15,7 +30,4 @@ rabbitmq:
     name: order.queue
   routing:
     key: order.tracking
-
-server:
-  port: 8084
 
