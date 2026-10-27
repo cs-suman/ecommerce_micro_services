@@ -1,5 +1,6 @@
 package com.ecommerce.order.services;
 
+import com.ecommerce.order.dto.OrderCreatedEvent;
 import com.ecommerce.order.dto.OrderItemDto;
 import com.ecommerce.order.dto.OrderResponse;
 import com.ecommerce.order.model.CartItem;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -70,10 +72,24 @@ public class OrderService {
         Order saved = orderRepository.save(order);
         // clear the cart
         cartService.cleraCart(userId);
+
+        //public order create Event
+        OrderCreatedEvent event= new OrderCreatedEvent(saved.getId(),saved.getUserId(),saved.getOrderStatus(),mapOfOrderItemDto(saved.getItem()),saved.getTotalAmount(),saved.getCreatedAt());
         rabbitTemplate.convertAndSend(exchangeName,routingKey
-                , Map.of("orderId",saved.getId()," status","CREATED"));
+                , event);
 
         return Optional.of(mapToOderResponse(saved));
+    }
+
+    private List<OrderItemDto> mapOfOrderItemDto(List<OrderItem> items){
+
+        return items.stream().
+                map(item-> new OrderItemDto(
+                        item.getId(),
+                        item.getProductId(),
+                        item.getQuantity(),
+                        item.getPrice().multiply(new BigDecimal(item.getQuantity()))
+                )).collect(Collectors.toList());
     }
 
     private OrderResponse mapToOderResponse(Order order) {
