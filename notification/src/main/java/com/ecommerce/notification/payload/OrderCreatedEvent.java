@@ -14,10 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderCreatedEvent {
     private Long orderId;
-    private Long userId;
+    private String userId;
     private OrderStatus status;
     private List<OrderItemDto> items;
     private BigDecimal totalAmount;
     private LocalDateTime createdAt;
-
+    private String email;
 }

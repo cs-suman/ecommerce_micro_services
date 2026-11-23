@@ -1,8 +1,10 @@
 package com.ecommerce.order.services;
 
+import com.ecommerce.order.clients.UserServiceClient;
 import com.ecommerce.order.dto.OrderCreatedEvent;
 import com.ecommerce.order.dto.OrderItemDto;
 import com.ecommerce.order.dto.OrderResponse;
+import com.ecommerce.order.dto.UserResponce;
 import com.ecommerce.order.model.CartItem;
 import com.ecommerce.order.model.Order;
 import com.ecommerce.order.model.OrderItem;
@@ -32,6 +34,8 @@ public class OrderService {
     @Value("${rabbitmq.routing.key}")
     private String routingKey;
 
+    private final UserServiceClient userServiceClient;
+
     public Optional<OrderResponse> createOrder(String userId) {
         //validate for cart item
         List<CartItem> cartItems = cartService.getCart(userId);
@@ -54,7 +58,7 @@ public class OrderService {
 
         // create  order
         Order order = new Order();
-        order.setUserId(Long.valueOf(userId));
+        order.setUserId(userId);
         order.setOrderStatus(OrderStatus.CONFIRMED);
         order.setTotalAmount(totalPrice);
         List<OrderItem> orderItemList = new ArrayList<>();
@@ -73,8 +77,10 @@ public class OrderService {
         // clear the cart
         cartService.cleraCart(userId);
 
+        UserResponce userResponce = userServiceClient.getUserDetails(userId);
+
         //public order create Event
-        OrderCreatedEvent event= new OrderCreatedEvent(saved.getId(),saved.getUserId(),saved.getOrderStatus(),mapOfOrderItemDto(saved.getItem()),saved.getTotalAmount(),saved.getCreatedAt());
+        OrderCreatedEvent event= new OrderCreatedEvent(saved.getId(),saved.getUserId(),saved.getOrderStatus(),mapOfOrderItemDto(saved.getItem()),saved.getTotalAmount(),saved.getCreatedAt(),userResponce.getEmail());
         rabbitTemplate.convertAndSend(exchangeName,routingKey
                 , event);
 

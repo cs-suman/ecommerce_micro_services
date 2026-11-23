@@ -28,7 +28,7 @@ public class OrderEventConsumer {
                 + "\n\nThank you!";
 
         emailService.sendEmail(
-                "pandageek0011@gmail.com",
+                orderEvent.getEmail(),
                 subject,
                 body
         );
